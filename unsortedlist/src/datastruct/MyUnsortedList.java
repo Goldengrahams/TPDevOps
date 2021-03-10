@@ -22,7 +22,7 @@ public class MyUnsortedList<E> implements UnsortedList<E> {
     }
 
     @SafeVarargs
-    public static <E> MyUnsortedList<E> of(E... elements) {
+    public static <E> MyUnsortedList<E> of(E... elements) {	
         return of(Arrays.asList(elements));
     }
 
@@ -94,12 +94,13 @@ public class MyUnsortedList<E> implements UnsortedList<E> {
 
     @Override
     public E popLast() {
-        return remove(size - 1);
+        return remove(size);
     }
-
+    
     @Override
     public E remove(int pos) throws IndexOutOfBoundsException {
-        if (pos < 0 || pos >= size) {
+    	int pos2 = pos;
+        if (pos < 0 || pos > size) {
             throw new IndexOutOfBoundsException();
         }
         if (pos == 0) {
@@ -110,10 +111,11 @@ public class MyUnsortedList<E> implements UnsortedList<E> {
         while (--pos > 0) {
             prevLink = prevLink.next;
         }
+        Link<E> removed = prevLink;
 
-        Link<E> removed = prevLink.next;
-        prevLink.next = removed.next;
-
+        prevLink.next = null;
+    	prevLink.next = removed.next;
+    	size--;
         return removed.element;
     }
 
